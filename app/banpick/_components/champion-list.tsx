@@ -58,7 +58,7 @@ export const ChampionList = () => {
           </div>
           <Input
             placeholder="챔피언을 검색해주세요"
-            className="w-[240px] bg-background border-0 rounded-[0] rounded-br-sm rounded-tr-sm h-full !text-lg"
+            className="w-[280px] bg-background border-0 rounded-[0] rounded-br-sm rounded-tr-sm h-full !text-lg"
           />
         </div>
       </div>
