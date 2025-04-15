@@ -4,12 +4,17 @@ import { create } from "zustand"
 import { ChampionTypes } from "../query/champion"
 
 type BanpickStoreTypes = {
+  match: number
+  status: "ban" | "pick"
   step: "red" | "blue" | "result"
+
   teamA: {
+    name: string
     score: number
     fearlessBannedList: Array<ChampionTypes & { id: number }>
   }
   teamB: {
+    name: string
     score: number
     fearlessBannedList: Array<ChampionTypes & { id: number }>
   }
@@ -24,27 +29,36 @@ type BanpickStoreTypes = {
     pickedChampionList: Array<ChampionTypes & { id: number }>
   }
   setBanChampion: (type: "red" | "blue", champion: ChampionTypes) => void
-  setTeamName: (type: "red" | "blue", name: string) => void
+  setTeamSide: (type: "red" | "blue", name: string) => void
+  setTeamName: (type: "teamA" | "teamB", name: string) => void
   setSelectChampion: (type: "red" | "blue", champion: ChampionTypes) => void
+  setAddMatch: () => void
+  setStep: (type: "red" | "blue" | "result") => void
+  setStatus: (type: "ban" | "pick") => void
 }
 
 export const useBanpickStore = create<BanpickStoreTypes>((set) => ({
+  match: 0,
   step: "blue",
+  status: "ban",
+
   teamA: {
+    name: "",
     score: 0,
     fearlessBannedList: [],
   },
   teamB: {
+    name: "",
     score: 0,
     fearlessBannedList: [],
   },
   blue: {
-    team: "TEAM_A",
+    team: "",
     bannedChampionList: [],
     pickedChampionList: [],
   },
   red: {
-    team: "TEAM_B",
+    team: "",
     bannedChampionList: [],
     pickedChampionList: [],
   },
@@ -65,12 +79,12 @@ export const useBanpickStore = create<BanpickStoreTypes>((set) => ({
         ...prev,
         [type]: {
           ...prev[type],
-          pickedChampionList: [...prev[type].bannedChampionList, champion],
+          pickedChampionList: [...prev[type].pickedChampionList, champion],
         },
       }
     }),
 
-  setTeamName: (type, name) =>
+  setTeamSide: (type, name) =>
     set((prev) => {
       return {
         ...prev,
@@ -78,6 +92,37 @@ export const useBanpickStore = create<BanpickStoreTypes>((set) => ({
           ...prev[type],
           team: name,
         },
+      }
+    }),
+
+  setAddMatch: () =>
+    set((prev) => ({
+      ...prev,
+      match: prev.match + 1,
+    })),
+
+  setTeamName: (type, name) =>
+    set((prev) => {
+      return {
+        ...prev,
+        [type]: {
+          ...prev[type],
+          name,
+        },
+      }
+    }),
+
+  setStep: (type: "red" | "blue" | "result") =>
+    set((prev) => ({
+      ...prev,
+      step: type,
+    })),
+
+  setStatus: (type) =>
+    set((prev) => {
+      return {
+        ...prev,
+        status: type,
       }
     }),
 }))

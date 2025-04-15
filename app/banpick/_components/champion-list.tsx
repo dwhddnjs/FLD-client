@@ -1,12 +1,122 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useChampionList } from "@/hooks/query/champion"
+import { ChampionTypes, useChampionList } from "@/hooks/query/champion"
+import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
 import { SearchIcon } from "lucide-react"
 import Image from "next/image"
 import React from "react"
 
 export const ChampionList = () => {
   const { data } = useChampionList()
+  const {
+    step,
+    status,
+    setBanChampion,
+    setSelectChampion,
+    blue,
+    red,
+
+    setStep,
+    setStatus,
+  } = useBanpickStore()
+
+  console.log("blue: ", blue)
+  console.log("red: ", red)
+  console.log("step: ", step)
+  console.log("status: ", status)
+
+  const onClickChampion = (item: ChampionTypes) => {
+    // 1페이즈 밴픽 3개 밴
+    if (
+      blue.bannedChampionList.length === 3 &&
+      red.bannedChampionList.length === 3
+    ) {
+      setStatus("pick")
+    }
+    // 1페이즈 블루 1개 선택
+    if (
+      blue.pickedChampionList.length === 1 &&
+      red.pickedChampionList.length === 0
+    ) {
+      setStep("red")
+    }
+    // 1페이즈 레드 2개 선택
+    if (
+      blue.pickedChampionList.length === 1 &&
+      red.pickedChampionList.length === 2
+    ) {
+      setStep("blue")
+    }
+    // 1페이즈 블루 2개 선택
+    if (
+      blue.pickedChampionList.length === 3 &&
+      red.pickedChampionList.length === 2
+    ) {
+      setStep("blue")
+    }
+    // 1페이즈 레드 1개 선택
+    if (
+      blue.pickedChampionList.length === 3 &&
+      red.pickedChampionList.length === 3
+    ) {
+      setStatus("ban")
+      setStep("red")
+    }
+
+    // 2페이즈 밴
+    if (
+      blue.bannedChampionList.length === 5 &&
+      red.bannedChampionList.length === 5
+    ) {
+      setStatus("pick")
+    }
+
+    // 2페이즈 레드 1개 선택
+    if (
+      blue.pickedChampionList.length === 3 &&
+      red.pickedChampionList.length === 4
+    ) {
+      setStep("blue")
+    }
+
+    // 2페이즈 레드 1개 선택
+    if (
+      blue.pickedChampionList.length === 5 &&
+      red.pickedChampionList.length === 4
+    ) {
+      setStep("red")
+    }
+
+    // 끝
+    if (
+      blue.pickedChampionList.length === 5 &&
+      red.pickedChampionList.length === 5
+    ) {
+      setStep("result")
+    }
+
+    if (status === "ban") {
+      if (step === "blue") {
+        setStep("red")
+        setBanChampion("blue", item)
+      }
+      if (step === "red") {
+        setBanChampion("red", item)
+        setStep("blue")
+      }
+    }
+    if (status === "pick") {
+      if (step === "blue") {
+        setSelectChampion("blue", item)
+      }
+      if (step === "red") {
+        setSelectChampion("red", item)
+      }
+    }
+  }
+
+  const onClickBanpick = (item: ChampionTypes) => {}
+
   return (
     <div className="flex-2 flex justify-center flex-col ">
       <div className="p-[24px] flex justify-between">
@@ -66,6 +176,7 @@ export const ChampionList = () => {
         {data?.data?.map((item) => (
           <div
             key={item.id}
+            onClick={() => onClickChampion(item)}
             className="w-fit min-w-[120px] min-h-[120px]  flex flex-col items-center "
           >
             <Image
