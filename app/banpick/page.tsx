@@ -12,12 +12,6 @@ import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
 function BanpickPage() {
   const store = useBanpickStore()
   const { data } = useChampionList()
-  // const pickedChampions1 = data && [...data?.data].slice(0, 5)
-  // const pickedChampions2 = data && [...data?.data].slice(5, 10)
-  // const banedChampions1 = data && [...data?.data].slice(10, 15)
-  // const banedChampions2 = data && [...data?.data].slice(15, 20)
-  // const banedChampions3 = data && [...data?.data].slice(20, 25)
-  // const banedChampions4 = data && [...data?.data].slice(25, 30)
 
   if (!data) {
     return null
@@ -28,15 +22,15 @@ function BanpickPage() {
       {/* header */}
       <div className="w-full h-[280px]  flex absolute top-[0] flex-row justify-between">
         {/*  블루 밴된 챔피언 */}
-        <BannedChampion />
+        <BannedChampion type="blue" />
         {/* 세트 헤더 */}
-        <div className="flex flex-2">
+        <div className="flex flex-2 border-b-4 border-card">
           <FearlessBannedChampion type="blue" />
           <PickCountTimmer />
           <FearlessBannedChampion type="red" />
         </div>
         {/*  레드 밴된 챔피언 */}
-        <BannedChampion />
+        <BannedChampion type="red" />
       </div>
       {/* center */}
       <div className="w-full  flex absolute left-0 right-0 top-[280px] bottom-[0]">

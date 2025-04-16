@@ -1,121 +1,53 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useBanpickFlow } from "@/hooks/hook/use-banpick-flow"
 import { ChampionTypes, useChampionList } from "@/hooks/query/champion"
 import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
 import { SearchIcon } from "lucide-react"
 import Image from "next/image"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { twMerge } from "tailwind-merge"
 
 export const ChampionList = () => {
   const { data } = useChampionList()
-  const {
-    step,
-    status,
-    setBanChampion,
-    setSelectChampion,
-    blue,
-    red,
 
-    setStep,
-    setStatus,
-  } = useBanpickStore()
+  const { step, status, setBanChampion, setSelectChampion, setStep } =
+    useBanpickStore()
+  const [selectedChampion, setSelectedChampion] =
+    useState<ChampionTypes | null>(null)
 
-  console.log("blue: ", blue)
-  console.log("red: ", red)
-  console.log("step: ", step)
-  console.log("status: ", status)
+  console.log("selectedChampion: ", selectedChampion)
 
-  const onClickChampion = (item: ChampionTypes) => {
-    // 1페이즈 밴픽 3개 밴
-    if (
-      blue.bannedChampionList.length === 3 &&
-      red.bannedChampionList.length === 3
-    ) {
-      setStatus("pick")
+  const onClickBanpick = () => {
+    if (!selectedChampion) {
+      return
     }
-    // 1페이즈 블루 1개 선택
-    if (
-      blue.pickedChampionList.length === 1 &&
-      red.pickedChampionList.length === 0
-    ) {
-      setStep("red")
-    }
-    // 1페이즈 레드 2개 선택
-    if (
-      blue.pickedChampionList.length === 1 &&
-      red.pickedChampionList.length === 2
-    ) {
-      setStep("blue")
-    }
-    // 1페이즈 블루 2개 선택
-    if (
-      blue.pickedChampionList.length === 3 &&
-      red.pickedChampionList.length === 2
-    ) {
-      setStep("blue")
-    }
-    // 1페이즈 레드 1개 선택
-    if (
-      blue.pickedChampionList.length === 3 &&
-      red.pickedChampionList.length === 3
-    ) {
-      setStatus("ban")
-      setStep("red")
-    }
-
-    // 2페이즈 밴
-    if (
-      blue.bannedChampionList.length === 5 &&
-      red.bannedChampionList.length === 5
-    ) {
-      setStatus("pick")
-    }
-
-    // 2페이즈 레드 1개 선택
-    if (
-      blue.pickedChampionList.length === 3 &&
-      red.pickedChampionList.length === 4
-    ) {
-      setStep("blue")
-    }
-
-    // 2페이즈 레드 1개 선택
-    if (
-      blue.pickedChampionList.length === 5 &&
-      red.pickedChampionList.length === 4
-    ) {
-      setStep("red")
-    }
-
-    // 끝
-    if (
-      blue.pickedChampionList.length === 5 &&
-      red.pickedChampionList.length === 5
-    ) {
-      setStep("result")
-    }
-
     if (status === "ban") {
       if (step === "blue") {
         setStep("red")
-        setBanChampion("blue", item)
+        setBanChampion("blue", selectedChampion)
       }
       if (step === "red") {
-        setBanChampion("red", item)
         setStep("blue")
+        setBanChampion("red", selectedChampion)
       }
     }
     if (status === "pick") {
       if (step === "blue") {
-        setSelectChampion("blue", item)
+        setSelectChampion("blue", selectedChampion)
       }
       if (step === "red") {
-        setSelectChampion("red", item)
+        setSelectChampion("red", selectedChampion)
       }
     }
+    setSelectedChampion(null)
   }
 
-  const onClickBanpick = (item: ChampionTypes) => {}
+  const onClickChampion = (item: ChampionTypes) => {
+    setSelectedChampion(item)
+  }
+
+  useBanpickFlow()
 
   return (
     <div className="flex-2 flex justify-center flex-col ">
@@ -177,21 +109,34 @@ export const ChampionList = () => {
           <div
             key={item.id}
             onClick={() => onClickChampion(item)}
-            className="w-fit min-w-[120px] min-h-[120px]  flex flex-col items-center "
+            className={twMerge(
+              "w-fit min-w-[120px] min-h-[120px]  flex flex-col items-center"
+            )}
           >
             <Image
               src={item.icon_image}
               width={100}
               height={100}
               alt="champion icon"
-              className="border-4"
+              className={twMerge(
+                "border-4",
+                selectedChampion?.id === item.id &&
+                  (step === "red" ? "border-red-500" : "border-blue-500")
+              )}
             />
             <p className="font-semiboldbold">{item.name}</p>
           </div>
         ))}
       </div>
       <div className="pb-[24px] pt-[12px] flex justify-center">
-        <Button className="w-[420px] h-[56px] text-xl font-extrabold rounded-4xl">
+        <Button
+          onClick={() => onClickBanpick()}
+          className={twMerge(
+            "w-[420px] h-[64px] text-xl font-extrabold rounded-4xl text-white",
+            step === "red" && `bg-red-500 hover:bg-red-600`,
+            step === "blue" && `bg-blue-500 hover:bg-blue-600`
+          )}
+        >
           챔피언 선택
         </Button>
       </div>
