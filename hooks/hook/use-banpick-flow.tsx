@@ -98,5 +98,9 @@ export const useBanpickFlow = () => {
     red.bannedChampionList.length,
     blue.pickedChampionList.length,
     red.pickedChampionList.length,
+    status,
+    step,
+    setStatus,
+    setStep
   ])
 }

@@ -11,43 +11,41 @@ import { twMerge } from "tailwind-merge"
 export const ChampionList = () => {
   const { data } = useChampionList()
 
-  const { step, status, setBanChampion, setSelectChampion, setStep } =
+  const { step, status, setBanChampion, selectedCurrentChampion,setSelectChampion, setSelectedCurrentChampion, setStep } =
     useBanpickStore()
-  const [selectedChampion, setSelectedChampion] =
-    useState<ChampionTypes | null>(null)
+  
 
-  console.log("selectedChampion: ", selectedChampion)
+  
 
   const onClickBanpick = () => {
-    if (!selectedChampion) {
+    if (!selectedCurrentChampion) {
       return
     }
     if (status === "ban") {
       if (step === "blue") {
         setStep("red")
-        setBanChampion("blue", selectedChampion)
+        setBanChampion("blue", selectedCurrentChampion)
       }
       if (step === "red") {
         setStep("blue")
-        setBanChampion("red", selectedChampion)
+        setBanChampion("red", selectedCurrentChampion)
       }
     }
     if (status === "pick") {
       if (step === "blue") {
-        setSelectChampion("blue", selectedChampion)
+        setSelectChampion("blue", selectedCurrentChampion)
       }
       if (step === "red") {
-        setSelectChampion("red", selectedChampion)
+        setSelectChampion("red", selectedCurrentChampion)
       }
     }
-    setSelectedChampion(null)
+    setSelectedCurrentChampion(null)
   }
 
   const onClickChampion = (item: ChampionTypes) => {
-    setSelectedChampion(item)
+    setSelectedCurrentChampion(item)
   }
 
-  useBanpickFlow()
 
   return (
     <div className="flex-2 flex justify-center flex-col ">
@@ -120,7 +118,7 @@ export const ChampionList = () => {
               alt="champion icon"
               className={twMerge(
                 "border-4",
-                selectedChampion?.id === item.id &&
+                selectedCurrentChampion?.id === item.id &&
                   (step === "red" ? "border-red-500" : "border-blue-500")
               )}
             />

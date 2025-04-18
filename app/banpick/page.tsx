@@ -8,15 +8,17 @@ import { BannedChampion } from "./_components/banned-champion"
 import { FearlessBannedChampion } from "./_components/fearless-banned-champion"
 import { PickCountTimmer } from "./_components/pick-count-timmer"
 import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
+import { useBanpickFlow } from "@/hooks/hook/use-banpick-flow"
 
 function BanpickPage() {
   const store = useBanpickStore()
   const { data } = useChampionList()
+  useBanpickFlow()
 
   if (!data) {
     return null
   }
-
+  
   return (
     <div className="h-full bg-background relative">
       {/* header */}

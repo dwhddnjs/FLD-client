@@ -7,7 +7,7 @@ type BanpickStoreTypes = {
   match: number
   status: "ban" | "pick"
   step: "red" | "blue" | "result"
-
+  selectedCurrentChampion: ChampionTypes | null
   teamA: {
     name: string
     score: number
@@ -35,13 +35,14 @@ type BanpickStoreTypes = {
   setAddMatch: () => void
   setStep: (type: "red" | "blue" | "result") => void
   setStatus: (type: "ban" | "pick") => void
+  setSelectedCurrentChampion: (champion: ChampionTypes | null) => void
 }
 
 export const useBanpickStore = create<BanpickStoreTypes>((set) => ({
   match: 0,
   step: "blue",
   status: "ban",
-
+  selectedCurrentChampion: null,
   teamA: {
     name: "",
     score: 0,
@@ -62,6 +63,12 @@ export const useBanpickStore = create<BanpickStoreTypes>((set) => ({
     bannedChampionList: [],
     pickedChampionList: [],
   },
+
+  setSelectedCurrentChampion: (champion) =>
+    set((prev) => ({
+      ...prev,
+      selectedCurrentChampion: champion,
+    })),
 
   setBanChampion: (type, champion) =>
     set((prev) => {
