@@ -26,7 +26,7 @@ function BanpickPage() {
         {/*  블루 밴된 챔피언 */}
         <BannedChampion type="blue" />
         {/* 세트 헤더 */}
-        <div className="flex flex-2 border-b-4 border-card">
+        <div className="flex flex-3 border-b-4 border-card">
           <FearlessBannedChampion type="blue" />
           <PickCountTimmer />
           <FearlessBannedChampion type="red" />

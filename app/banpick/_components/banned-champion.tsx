@@ -17,7 +17,7 @@ export const BannedChampion = ({ championList, type }: BannedChampionProps) => {
   const isCurrentTeam = store.step === type
 
   return (
-    <div className="space-y-[12px] flex flex-1 flex-col justify-center items-center border-b-4  border-card">
+    <div className="space-y-[12px] flex flex-1 flex-col justify-center items-center border-b-4  border-card border-r-4 border-l-4">
       <div className="flex flex-col justify-center items-center px-[12px] space-y-[12px]">
         <div className="flex gap-x-[24px]">
           <div className="border-4 w-[110px] h-[110px] relative bg-card">

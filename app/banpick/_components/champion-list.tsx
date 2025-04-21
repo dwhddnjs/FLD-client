@@ -27,6 +27,15 @@ export const ChampionList = () => {
     return currentSelectedChampionList.find((champion) => champion.id === item.id)
   }
 
+  const onClickTab = (newTab: "top" | "jgl" | "mid" | "ad" | "spt" | "all") => {
+    
+    if(tab === newTab) {
+      setTab("all")
+      return
+    }
+    setTab(newTab)
+  }
+
   const filteredChampions = data?.data?.filter((champion) => {
     const searchLower = searchQuery.toLowerCase()
     const nameLower = champion.name.toLowerCase()
@@ -91,11 +100,11 @@ export const ChampionList = () => {
   }
 
   return (
-    <div className="flex-2 flex justify-center flex-col h-full">
+    <div className="flex-3 flex justify-center flex-col h-full">
       <div className="p-[24px] flex justify-between">
         <div className="space-x-[18px] flex-row flex ">
           <div className="w-fit">
-          <Button size="icon" variant="ghost" onClick={() => setTab("top")}>
+          <Button size="icon" variant="ghost" onClick={() => onClickTab("top")}>
             <Image
               src="/images/top_icon_p.svg"
               width={64}
@@ -106,7 +115,7 @@ export const ChampionList = () => {
           <div className={twMerge(tab === "top" && "w-full h-[4px] bg-primary ")} />
           </div>
           <div className="w-fit">
-          <Button size="icon" variant="ghost" onClick={()=> setTab("jgl")}>
+          <Button size="icon" variant="ghost" onClick={()=> onClickTab("jgl")}>
             <Image  
               src="/images/jgl_icon_p.svg"
               width={64}
@@ -117,7 +126,7 @@ export const ChampionList = () => {
           <div className={twMerge(tab === "jgl" && "w-full h-[4px] bg-primary ")} />
           </div>
           <div className="w-fit">
-          <Button size="icon" variant="ghost" onClick={()=> setTab("mid")}>
+          <Button size="icon" variant="ghost" onClick={()=> onClickTab("mid")}>
             <Image
               src="/images/mid_icon_p.svg"
               width={64}
@@ -128,7 +137,7 @@ export const ChampionList = () => {
           <div className={twMerge(tab === "mid" && "w-full h-[4px] bg-primary ")} />
           </div>
           <div className="w-fit">
-          <Button size="icon" variant="ghost" onClick={()=> setTab("ad")}>
+          <Button size="icon" variant="ghost" onClick={()=> onClickTab("ad")}>
             <Image
               src="/images/ad_icon_p.svg"
               width={64}
@@ -139,7 +148,7 @@ export const ChampionList = () => {
           <div className={twMerge(tab === "ad" && "w-full h-[4px] bg-primary ")} />
           </div>
           <div className="w-fit">
-          <Button size="icon" variant="ghost" onClick={()=> setTab("spt")}>
+          <Button size="icon" variant="ghost" onClick={()=> onClickTab("spt")}>
             <Image
               src="/images/spt_icon_p.svg"
               width={64}
@@ -159,10 +168,11 @@ export const ChampionList = () => {
             className="w-[280px] bg-background border-0 rounded-[0] rounded-br-sm rounded-tr-sm h-full !text-lg"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setTab("all")}
           />
         </div>
       </div>
-      <div className="px-[24px] grid auto-rows-min grid-cols-10 overflow-y-auto justify-items-center gap-y-2 gap-x-2 h-[calc(100vh-300px)]">
+      <div className="px-[24px] grid auto-rows-min grid-cols-14 overflow-y-auto justify-items-center gap-y-2 gap-x-2 h-[calc(100vh-300px)]">
         {filteredChampions.map((item) => (
           <div
             key={item.id}

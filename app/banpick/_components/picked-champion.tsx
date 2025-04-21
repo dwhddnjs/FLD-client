@@ -31,14 +31,14 @@ export const PickChampion = ({
               <Image
                 src={store.selectedCurrentChampion.splash_image}
                 fill
-                className="object-cover object-top scale-110"
+                className="object-cover object-top scale-100"
                 alt="pick champion"
               />
             ) : item?.splash_image ? (
               <Image
                 src={item.splash_image}
                 fill
-                className="object-cover object-top scale-110"
+                className="object-cover object-top scale-100"
                 alt="pick champion"
               />
             ) : (

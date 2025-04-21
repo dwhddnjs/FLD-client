@@ -34,8 +34,8 @@ export const FearlessBannedChampion = ({
           </>
         )}
       </div>
-      <div className="flex-2 flex justify-center items-center flex-col gap-y-[8px]">
-        <div className="flex gap-x-[24px]">
+      <div className={"flex-2 flex justify-center items-center flex-col gap-y-[8px]"}>
+        <div className="flex gap-x-[72px] w-full justify-center">
           <div className="flex gap-x-[8px] flex-col gap-y-[4px]">
             <p className="font-bold">1SET</p>
             <div className="flex flex-row  gap-x-[8px]">
@@ -81,7 +81,7 @@ export const FearlessBannedChampion = ({
             </div>
           </div>
         </div>
-        <div className="flex gap-x-[24px]">
+        <div className="flex gap-x-[72px] w-full justify-center">
           <div className="flex gap-x-[8px] flex-col gap-y-[4px]">
             <p className="font-bold">3SET</p>
             <div className="flex flex-row  gap-x-[8px]">
