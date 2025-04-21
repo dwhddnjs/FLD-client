@@ -1,3 +1,5 @@
+'use client'
+
 import { ChampionTypes } from "@/hooks/query/champion"
 import Image from "next/image"
 import React from "react"
@@ -13,7 +15,7 @@ export const FearlessBannedChampion = ({
   championList,
 }: FearlessBannedChampionProps) => {
   return (
-    <div className="flex flex-3 flex-col">
+    <div className="flex flex-4 flex-col">
       <div
         className={twMerge(
           "flex-1 bg-blue-500 flex items-center justify-between px-[32px]",

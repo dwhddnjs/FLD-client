@@ -1,3 +1,5 @@
+'use client'
+
 import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
 import React from "react"
 

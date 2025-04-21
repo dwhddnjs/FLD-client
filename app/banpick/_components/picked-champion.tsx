@@ -3,7 +3,7 @@
 import { ChampionTypes } from "@/hooks/query/champion"
 import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
 import Image from "next/image"
-import React from "react"
+import React, { useMemo } from "react"
 import { twMerge } from "tailwind-merge"
 
 interface PickChampionProps {  
@@ -16,7 +16,10 @@ export const PickChampion = ({
 
   const store = useBanpickStore()
   const championList = type === "left" ? store.blue.pickedChampionList : store.red.pickedChampionList
-
+  const isCurrentTeam = useMemo(() => 
+    type === "left" ? store.step === "blue" : store.step === "red",
+    [type, store.step]
+  )
 
   return (
     <div className="flex flex-1 flex-col">
@@ -24,11 +27,18 @@ export const PickChampion = ({
         const item = championList?.[index]
         return (
           <div className="flex-1 relative overflow-hidden" key={index}>
-            {item?.splash_image ? (
+            {store.status === "pick" && isCurrentTeam && store.selectedCurrentChampion && (!championList || championList.length === index) ? (
+              <Image
+                src={store.selectedCurrentChampion.splash_image}
+                fill
+                className="object-cover object-top scale-110"
+                alt="pick champion"
+              />
+            ) : item?.splash_image ? (
               <Image
                 src={item.splash_image}
                 fill
-                className="object-cover object-top scale-120"
+                className="object-cover object-top scale-110"
                 alt="pick champion"
               />
             ) : (
@@ -40,7 +50,9 @@ export const PickChampion = ({
                 type === "right" && "left-4"
               )}
             >
-              {item?.name || `Player ${index + 1}`}
+              {store.status === "pick" && isCurrentTeam && store.selectedCurrentChampion && (!championList || championList.length === index) 
+                ? store.selectedCurrentChampion.name 
+                : item?.name || `Player ${index + 1}`}
             </p>
           </div>
         )
