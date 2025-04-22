@@ -1,20 +1,22 @@
 "use client"
 
 import { useChampionList } from "@/hooks/query/champion"
-import React from "react"
+import React, { useState } from "react"
 import { ChampionList } from "./_components/champion-list"
 import { PickChampion } from "./_components/picked-champion"
 import { BannedChampion } from "./_components/banned-champion"
 import { FearlessBannedChampion } from "./_components/fearless-banned-champion"
 import { PickCountTimmer } from "./_components/pick-count-timmer"
-import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
 import { useBanpickFlow } from "@/hooks/hook/use-banpick-flow"
+import { ResultModal } from "./_components/result-modal"
+
 
 function BanpickPage() {
-  const store = useBanpickStore()
   const { data } = useChampionList()
+
   useBanpickFlow()
 
+  
   if (!data) {
     return null
   }
@@ -43,6 +45,8 @@ function BanpickPage() {
         {/* right */}
         <PickChampion type="right" />
       </div>
+      <ResultModal />
+
     </div>
   )
 }

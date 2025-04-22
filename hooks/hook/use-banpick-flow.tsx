@@ -2,9 +2,11 @@
 
 import { useEffect } from "react"
 import { useBanpickStore } from "../zustand/use-banpick-store"
+import { useResultModalStore } from "../zustand/use-result-modal-store"
 
 export const useBanpickFlow = () => {
   const { step, status, blue, red, setStep, setStatus } = useBanpickStore()
+  const { setIsOpen } = useResultModalStore()     
 
   console.log(
     "blue: ",
@@ -99,4 +101,12 @@ export const useBanpickFlow = () => {
     blue.pickedChampionList.length,
     red.pickedChampionList.length,
   ])
+
+  useEffect(() => {
+    if(status === "pick" && step === "result") {
+      setIsOpen(true)
+    }
+  }, [status, step])
 }
+
+

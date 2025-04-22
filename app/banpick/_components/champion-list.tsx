@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { useBanpickFlow } from "@/hooks/hook/use-banpick-flow"
 import { ChampionTypes, useChampionList } from "@/hooks/query/champion"
 import { useBanpickStore } from "@/hooks/zustand/use-banpick-store"
+import { useResultModalStore } from "@/hooks/zustand/use-result-modal-store"
 import { positionChampionList } from "@/lib/constant"
 import { searchByInitial } from "@/lib/function"
 import { SearchIcon } from "lucide-react"
@@ -13,10 +14,12 @@ import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
 
+
 export const ChampionList = () => {
   const { data } = useChampionList()
   const { step, status, setBanChampion, selectedCurrentChampion, setSelectChampion, setSelectedCurrentChampion, setStep, red, blue } =
     useBanpickStore()
+  const { setIsOpen } = useResultModalStore()
   const [searchQuery, setSearchQuery] = useState("")
   const currentSelectedChampionList = [...red.bannedChampionList, ...blue.bannedChampionList, ...red.pickedChampionList, ...blue.pickedChampionList]
   const [tab, setTab] = useState<"top" | "jgl" | "mid" | "ad" | "spt" | "all">("all")
@@ -86,6 +89,7 @@ export const ChampionList = () => {
         setSelectChampion("red", selectedCurrentChampion)
       }
     }
+
     setSelectedCurrentChampion(null)
     setSearchQuery("")
   }
